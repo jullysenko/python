@@ -1,4 +1,3 @@
-from controller import*
+import controller
 
-button_click()
-
+controller.button_click()
