@@ -12,4 +12,3 @@ del list_numbers[0::2]
 print(list_numbers)
 sum = reduce(lambda x, y: x + y, list_numbers)
 print(sum)
-

@@ -10,4 +10,4 @@ list_numbers = []
 
 list_numbers = [random.randint(-number, number) for i in range(number)]
 
-print(list_numbers)   
+print(list_numbers)

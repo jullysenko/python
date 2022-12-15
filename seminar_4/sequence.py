@@ -19,3 +19,4 @@ for i in range(len(list_num)):
     if count == 1:
         list_new.append(list_num[i])
 print(list_new)
+
