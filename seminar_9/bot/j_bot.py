@@ -1,11 +1,18 @@
-import telebot
+import telebot 
+import time
 from spy import *
+from telebot import types
 
 bot = telebot.TeleBot("TOKEN", parse_mode=None)
 
 print('start server')
 
-@bot.message_handler(commands=['start','hello','help','info'])
+markup = types.ReplyKeyboardMarkup()                 # создаётся клавиатура
+itembtn1 = types.KeyboardButton('котик')             # создаются кнопки
+itembtn2 = types.KeyboardButton('ИМТ')  
+markup.add(itembtn1, itembtn2)
+
+@bot.message_handler(commands=['start','hello','help','info','cat'])
 def send_welcome(message):
     log(message)
     if message.text == '/start':
@@ -16,13 +23,19 @@ def send_welcome(message):
         bot.reply_to(message, f'Для выбора команды начни вводить: /\nДля работы с ботом можно ввести любой текст.')
     elif message.text == '/info':     
         bot.reply_to(message, f'Что такое ИМТ?\nИндекс массы тела определяется как масса тела, поделенная на рост в квадрате.\nВаш ИМТ не всегда может давать точное представление о вашем здоровье, потому что он не учитывает соотношение жировой и мышечной массы тела.')    
+    elif message.text == '/cat':  
+        bot.reply_to(message, f'Хочешь посмотреть на котиков?\nПришли слово: котик')
 
 @bot.message_handler(content_types=["text"])
 def height_user(message):
     log(message)
-    sent_msg = bot.send_message(message.chat.id, 'Укажите свой рост.')
-    bot.register_next_step_handler(sent_msg, height_handler) 
-
+    if message.text == 'котик':                        # пришлет котика
+        r = (f'https://cataas.com/cat?t=${time.time()}')
+        bot.send_photo(message.chat.id, r, reply_markup=markup)    
+    else:
+        sent_msg = bot.send_message(message.chat.id, 'Укажите свой рост.')
+        bot.register_next_step_handler(sent_msg, height_handler) 
+          
 def height_handler(message):
     log(message)
     height = float(message.text)
@@ -45,6 +58,6 @@ def weight_handler(message, height):
         bot.send_photo(message.chat.id, 'https://avatars.mds.yandex.net/i?id=72d13c4adce78e8cbb7e204cd50830e9_l-5390142-images-thumbs&ref=rim&n=13&w=1078&h=1078')
     elif res < 18.5:
         bot.send_message(message.chat.id, f'Вам пора поесть.') 
-        bot.send_photo(message.chat.id, 'https://adonius.club/uploads/posts/2022-06/1654457574_9-adonius-club-p-golodnii-kotik-krasivo-foto-9.jpg')
+        bot.send_photo(message.chat.id, 'https://adonius.club/uploads/posts/2022-06/1654457574_9-adonius-club-p-golodnii-kotik-krasivo-foto-9.jpg')   
 
 bot.infinity_polling()    
