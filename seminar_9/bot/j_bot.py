@@ -29,7 +29,7 @@ def send_welcome(message):
 @bot.message_handler(content_types=["text"])
 def height_user(message):
     log(message)
-    if message.text == 'котик':                        # пришлет котика
+    if message.text == 'котик':                        # пришлёт котика
         r = (f'https://cataas.com/cat?t=${time.time()}')
         bot.send_photo(message.chat.id, r, reply_markup=markup)    
     else:
